@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import LineWaves from './LineWaves'
 import ScrollReveal from './ScrollReveal'
+import { buildExtraLocales, detectInitialLanguage, languageOptions, localeUi } from './locales'
 
 const projectMedia = {
   forbidden: [
@@ -240,25 +241,25 @@ const copy = {
     heroSub: '刘庄威以可穿戴物件为媒介，探触欲望、身份与身体周围悄然运作的社会秩序。',
     scroll: '向下探索',
     aboutLabel: '01 — 个人简介',
-    aboutTitle: '在珠宝的亲密尺度与表演的公共场域之间游移。',
+    aboutTitle: '游走于珠宝的亲密尺度与表演的公共场域之间。',
     aboutBody:
-      '我制作珠宝、配饰与物件，但创作通常始于一些更难被看见的东西：被收起的情绪、人与人之间的距离，或一个迟迟没有消失的问题。制作让这些安静的观察获得身体，也让我能够暂时抽离、凝视，再以另一种形态将它们放回现实。',
+      '我创作珠宝、配饰与物件，但起点往往不是某种具体形态，而是被压低的情绪、人与人之间的距离，或一个迟迟没有答案的问题。制作让这些不易言说的感受有了可以触碰的形体；我借此与它们保持距离，重新审视，再以另一种方式带回现实。',
     aboutSecond:
-      '我在中国成长并接受设计教育，之后来到伦敦继续实践。我偏爱不急于解释自己的作品——形态准确，却保留一点未被封闭的余地；足够亲密，同时意识到身体之外仍有秩序在运行。在独立创作与商业开发之间，我寻找感受、结构与生产现实可以共存的位置。',
+      '我在中国成长并接受设计教育，之后来到伦敦继续创作。我偏爱那些不急于给出解释的作品：形态精确，却保留未被封闭的余地；尺度亲密，同时意识到身体之外仍有秩序在运作。在独立创作与商业开发之间，我寻找感受力、结构和生产现实能够共存的位置。',
     based: '伦敦 · 开放设计、艺术与品牌合作',
     experience: '经历节选',
     autobiographyTitle: '在反差之间建立自我',
     autobiography: [
-      '我从来不认为自己是一名传统意义上的设计师。设计是我理解世界的一种方式，却不是我唯一的语言。我的兴趣常常越过专业划定的边界，进入一些看似彼此无关的领域：音乐、语言、漫画、身体训练、营养，以及关于人和社会的细微观察。它们并不构成一条整齐的路径，却共同塑造了我感知、学习和创造事物的方式。',
+      '我从不把自己视为传统意义上的设计师。设计是我理解世界的方式之一，却不是唯一的语言。我的好奇心经常越过专业边界，延伸到音乐、语言、漫画、身体训练、营养，以及对人和社会的细微观察。它们没有构成一条笔直而整齐的路，却共同塑造了我感知、学习和创造事物的方式。',
       '我没有接受过系统的乐理训练，但可以凭借反复聆听，将一首流行歌曲中的旋律、节奏、音色与编排逐层拆解，并完成高度接近原作的扒带。对我而言，这不仅是一种听觉能力，更像是对结构的本能追踪——从复杂的信息中辨认秩序，再将它重新搭建起来。这种能力也延伸到了我的设计实践：我习惯先观察那些不易被说出的关系，再寻找适合它们的材料、形态和表达方式。',
-      '语言学习同样发生在非传统的路径中。没有经过系统课程，仅凭长期听歌、观看影像和对语境的反复揣摩，我逐渐能够理解大部分日常粤语内容，也可以使用日语进行简单交流。我感兴趣的并不只是词汇，而是一种语言背后的情绪、节奏和思考方式。每进入一种新的语言，我都像是短暂地借用了另一种感官，重新理解人与人之间如何靠近，又如何保持距离。',
+      '我与语言的关系也沿着一条非典型的路径发展。没有系统课程，我主要通过音乐、影像和对语境的长期留意来学习。久而久之，我能够理解大部分日常粤语内容，也可以用日语进行简单交流。吸引我的不只是词汇，还有一种语言承载的情绪节奏与思考方式。每走进一种新的语言，都像是暂时借用了另一种感官。',
       '与此同时，我也进行漫画创作。漫画让我思考画面、时间与叙事之间的关系：一个动作如何被切分，一种情绪如何停留在沉默的格子里，一个没有被画出的瞬间又如何由观看者自行补全。健身训练与饮食研究则让我从另一种尺度理解身体。我持续学习训练结构、恢复机制和营养搭配，并将它们落实于自己的日常实践。身体对我而言并非抽象的载体，而是一套会疲劳、适应、抵抗和重建的真实系统。这也影响了我对珠宝与可穿戴物件的理解——它们不是被放置在身体表面的装饰，而是会与重量、动作、触觉和心理边界发生关系的存在。',
       '这些身份之间存在明显的反差，但我从未试图将它们整理成一个过分工整的标签。我更愿意把自己理解为一个持续学习、拆解与重组的人。广泛的兴趣有时意味着绕远路，却也让我不容易被单一专业的惯性限制。我可以在感性与结构、幻想与生产、个人经验与公共语境之间不断转换。',
-      '我的人生并不是一条按部就班的路线。我经历过一些如果可以选择，多数人或许不会主动选择的事情。但我不希望用苦难解释自己，也不打算把它们变成一种供人观看的叙事。它们属于我，却不定义我。我更愿意感谢那些经历留下的敏感、韧性与判断力——它们让我能够在不确定中继续工作，在失去现成答案时建立自己的秩序，也让我成为今天这个仍然愿意学习、保持好奇并继续创造的人。',
-      '我并不是因为掌握了许多看似无关的技能而特别。真正重要的是，我始终相信不同知识之间存在尚未被发现的连接。我的实践正发生在这些连接之中：在声音与形态之间，在语言与身份之间，在身体与物件之间，也在个人经验与更广阔的现实之间。',
+      '我的人生没有沿着一条按部就班的路线展开。我经历过一些多数人若有选择，大概不会愿意承受的事情。但我不希望用苦难解释自己，也不打算把它们变成供人观看的叙事。它们属于我，却不定义我。我更愿意感谢那些经历留下的敏感、韧性与判断力——它们让我能够在不确定中继续工作，在没有现成答案时建立自己的秩序，也让我至今仍愿意学习、保持好奇并继续创造。',
+      '对我而言，重要的从来不是掌握了多少看似无关的技能，而是始终相信：不同知识之间，在被看见以前就已经存在连接。我的实践正发生在这些连接之中——声音与形态、语言与身份、身体与物件，以及个人经验与更广阔的现实之间。',
     ],
     exp: [
-      ['BeJustHuG / BJHG', '产品 / 配饰设计师', '2025 — 2026'],
+      ['BeJustHuG / BJHG', '产品与配饰设计师', '2025 — 2026'],
       ['独立实践', '设计师 / 艺术家', '2024 — 至今'],
       ['伦敦艺术大学——伦敦时装学院', 'MA Fashion Artefact / 时尚手工艺品', '2022 — 2026'],
       ['北京服装学院', '产品设计（珠宝）本科', '2017 — 2021'],
@@ -277,10 +278,10 @@ const copy = {
         year: '2021',
         cover: '/assets/projects/forbidden-fruit/cover.png',
         statement:
-          '《Forbidden Fruit》注视保护如何滑向禁令，也注视禁令如何反向放大欲望。苹果在此成为知识、诱惑与越界的隐喻；矛盾被凝结成一件可被靠近、触碰与佩戴的物件。',
+          '《Forbidden Fruit》讨论保护如何逐渐变成禁令，以及禁令又如何反过来放大欲望。苹果在这里象征知识、诱惑与越界，这组矛盾最终被凝结为一件可以靠近、触碰和佩戴的物件。',
         details: [
           '项目从内容分级制度出发，关注“一种标准适用于所有人”如何抹去年龄、语境与个体差异。当暴力、性暗示或其他成人元素以保护之名被彻底移除，禁令本身反而会放大对未知事物的好奇。我试图捕捉人在边界附近反复试探时，吸引、迟疑与紧张同时发生的心理状态。',
-          '苹果连接着知识、诱惑、堕落与罪。通过拼贴、绘画以及气球与尖锐物逐渐靠近的张力实验，我将这种矛盾转译为珠宝：光滑表面邀请触碰，受到挤压的结构却让身体停留在靠近与克制之间。',
+          '苹果同时指向知识、诱惑、堕落与罪。通过拼贴、绘画，以及气球与尖锐物逐渐靠近的张力实验，我将这种矛盾转译为珠宝：光滑表面邀请触碰，受到挤压的结构却让身体停留在靠近与克制之间。',
         ],
         focus: '禁令 · 欲望 · 越界',
         media: projectMedia.forbidden,
@@ -294,7 +295,7 @@ const copy = {
         year: '2020',
         cover: '/assets/projects/am-i-lost/cover.jpeg',
         statement:
-          '《Flow》从春运中不息的人口迁徙出发，将流动数据与人体血管系统彼此叠映。路线、循环与压力由此生长为沿颈部、胸腔与四肢蔓延的珠宝形态。',
+          '《Flow》从春运期间持续发生的人口迁徙出发，将迁徙数据与人体血管系统并置。路线、循环与压力被转化为沿颈部、胸腔和四肢延伸的珠宝形态。',
         details: [
           '春运并不只是一场季节性的流动奇观，它映射着人们居住、工作与归属之间长期存在的距离。城乡发展差距使迁徙成为一种历史性的必然，数以亿计的人在两个或更多地点之间往返，仿佛始终处于一条没有终点的路线之中。',
           '以北京与深圳为例，人口迁入迁出的数据形成从中心向外放射的网络，如同心脏将血液泵向身体各处。我将这些迁徙图谱与心脏、肺部、肩部、手臂、手腕和手指的血管走势并置，发展出分支、循环与蔓延的有机语言。佩戴者既是独立的身体，也成为庞大社会循环中持续移动的一个细胞。',
@@ -311,7 +312,7 @@ const copy = {
         year: '2021',
         cover: '/assets/projects/dantes-game/face.jpeg',
         statement:
-          '《Dante’s Game》追问身体被观看与评判的尺度究竟由谁书写。参与者依照各自的理想改写图像，这些痕迹随后化为轻质穿戴物，并进入一场关于比较、规训与身体交换的参与式游戏。',
+          '《Dante’s Game》追问：我们用来观看和评判身体的标准究竟由谁决定？参与者按照各自的审美修改图像，这些修改随后被制作成轻质穿戴物，并进入一场围绕比较、规训与身体交换展开的参与式游戏。',
         details: [
           '前期问卷围绕人们对五官与身体的不满、他人评价带来的影响，以及审美究竟源于个人判断还是既定社会规则展开。我没有把答案仅仅视作统计结果，而是构建了一个由规则制定者 Dante 支配的想象世界，让审美判断成为一套可以被参与和执行的制度。',
           '四位参与者依照自己的标准修改我的面部与身体照片。我提取被改变的形态，将其制作成分布于头部、肩部、腰部、臀部和脚部的轻质树脂穿戴物，再通过四阶段游戏归还给参与者。计分、身体交换与追逐规则揭示了个人偏好如何迅速转化为等级、规训与控制。',
@@ -329,7 +330,7 @@ const copy = {
         year: '2021',
         cover: '/assets/projects/peeping/cover.jpg',
         statement:
-          '《Peeping》凝视数据时代的隐私边界，以及窥探他者生活的冲动。距离传感器牵动折叠结构，使“靠近”本身成为观察者、物件与被观看身体之间一次略带不安的交换。',
+          '《Peeping》关注数据时代的隐私边界，以及人们窥探他者生活的冲动。距离传感器驱动折叠结构，让“靠近”本身成为观察者、物件与被观看身体之间一次令人不安的互动。',
         details: [
           '项目始于人试图进入他者内心的欲望，以及这种欲望如何逐渐演变为控制。在海量数据塑造的环境中，隐私变得越来越容易被接近，妥协也成为日常。《Peeping》将这种不可见的状态转化为一次真实的身体遭遇。',
           '距离传感器读取另一个身体的靠近，并驱动舵机旋转；鱼线随之拉动折纸结构，使穿戴物展开、收缩并作出反应。观察者的移动因此成为作品的一部分：观看不再是被动行为，每一次靠近都会在被观看的身体上留下可见回应。',
@@ -354,7 +355,7 @@ const copy = {
         subtitle: '重构节日仪式',
         year: '2025',
         type: '新年礼盒 · 产品与视觉开发',
-        body: '以当代游戏仪式重新组织敦煌的视觉记忆。项目贯穿图形语言、物件开发、包装、打样与最终影像，使文化线索落入可触碰、可使用的节日场景。',
+        body: '以当代游戏仪式重新组织敦煌的视觉记忆。项目贯穿图形语言、物件开发、包装、打样与最终影像，让文化线索进入可触碰、可使用的节日场景。',
       },
       cap: {
         title: 'Wear for Fun',
@@ -397,16 +398,18 @@ const copy = {
     endTitle: ['让新的', '语言', '发生。'],
     email: 'lzw0310lk@gmail.com',
     instagram: 'cheungway_lau',
-    copyright: '© 2026 ZHUANGWEI LIU. 保留所有权利。',
+    copyright: '© 2026 ZHUANGWEI LIU. 版权所有。',
   },
 }
+
+Object.assign(copy, buildExtraLocales(copy.en))
 
 function Arrow() {
   return <span aria-hidden="true">↗</span>
 }
 
 function App() {
-  const [lang, setLang] = useState('en')
+  const [lang, setLang] = useState(detectInitialLanguage)
   const [scrolled, setScrolled] = useState(false)
   const [showcaseIndex, setShowcaseIndex] = useState(0)
   const [showcasePosition, setShowcasePosition] = useState(0)
@@ -422,6 +425,7 @@ function App() {
   const commercialWheelSnapTimer = useRef(null)
   const dragState = useRef({ type: null, startX: 0, startPosition: 0, currentPosition: 0, moved: false })
   const t = copy[lang]
+  const ui = localeUi[lang]
   const projectRoute = route.match(/^#\/project\/([^/]+)$/)
   const commercialRoute = route.match(/^#\/commercial(?:\/([^/]+))?$/)
   const isCommercial = Boolean(commercialRoute)
@@ -438,17 +442,19 @@ function App() {
   }, [])
 
   useEffect(() => {
-    document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en'
-  }, [lang])
+    document.documentElement.lang = ui.htmlLang
+    try {
+      window.localStorage.setItem('portfolio-language', lang)
+    } catch {
+      // Keep the selected language for this session if storage is unavailable.
+    }
+  }, [lang, ui.htmlLang])
 
   useEffect(() => {
-    const suffix = lang === 'zh'
-      ? '珠宝、配饰与产品设计师 / 当代艺术家'
-      : 'Jewelry, Accessory & Product Designer / Contemporary Artist'
     if (activeProject) document.title = `${activeProject.title} — Zhuangwei Liu`
-    else if (isCommercial) document.title = `${lang === 'zh' ? '商业作品' : 'Commercial Works'} — Zhuangwei Liu`
-    else document.title = `Zhuangwei Liu — ${suffix}`
-  }, [activeProject, isCommercial, lang])
+    else if (isCommercial) document.title = `${ui.commercialTitle} — Zhuangwei Liu`
+    else document.title = `Zhuangwei Liu — ${ui.professionalTitle}`
+  }, [activeProject, isCommercial, ui])
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 30)
@@ -652,22 +658,31 @@ function App() {
   const nextProject = activeProject ? t.projects[(activeProjectIndex + 1) % t.projects.length] : null
 
   return (
-    <main className={`${lang === 'zh' ? 'zh' : ''} ${activeProject ? 'project-page' : isCommercial ? 'commercial-page' : 'home-page'}`}>
+    <main className={`${lang !== 'en' ? 'cjk' : ''} lang-${lang} ${activeProject ? 'project-page' : isCommercial ? 'commercial-page' : 'home-page'}`}>
       <LineWaves />
       <header className={`nav ${scrolled ? 'nav--solid' : ''}`}>
-        <button className="wordmark" onClick={() => openHome()} aria-label="Back to home">
+        <button className="wordmark" onClick={() => openHome()} aria-label={ui.backHome}>
           ZL<span>®</span>
         </button>
-        <nav className="nav__links" aria-label="Main navigation">
+        <nav className="nav__links" aria-label={ui.mainNavigation}>
           <button onClick={() => openHome('about')}>{t.nav[0]}</button>
           <button onClick={() => openHome(1)}>{t.nav[1]}</button>
           <button onClick={() => openHome('commercial-showcase')}>{t.nav[2]}</button>
         </nav>
         <div className="nav__actions">
-          <div className="lang" aria-label="Language">
-            <button className={lang === 'en' ? 'active' : ''} onClick={() => setLang('en')}>EN</button>
-            <i />
-            <button className={lang === 'zh' ? 'active' : ''} onClick={() => setLang('zh')}>中文</button>
+          <div className="lang" aria-label={ui.language}>
+            {languageOptions.map((option) => (
+              <button
+                className={lang === option.key ? 'active' : ''}
+                key={option.key}
+                onClick={() => setLang(option.key)}
+                title={option.name}
+                aria-label={option.name}
+                aria-pressed={lang === option.key}
+              >
+                {option.label}
+              </button>
+            ))}
           </div>
           <button className="contact-pill" onClick={() => activeProject || isCommercial ? openHome('contact') : jump('contact')}>
             {t.contact}<Arrow />
@@ -679,7 +694,7 @@ function App() {
         <>
           <section className="project-detail">
             <div className="case-study shell">
-              <button className="back-link" onClick={() => openHome(activeProjectIndex + 1)}>← {lang === 'zh' ? '返回项目' : 'Back to projects'}</button>
+              <button className="back-link" onClick={() => openHome(activeProjectIndex + 1)}>← {ui.backProjects}</button>
               <div className="case-study__meta">
                 <span>{activeProject.no} / 04</span>
                 <span>{activeProject.type}</span>
@@ -719,7 +734,7 @@ function App() {
               {activeProject.videoId && (
                 <section className="case-video" aria-label={`${activeProject.title} performance video`}>
                   <div className="case-video__head">
-                    <span>{lang === 'zh' ? '游戏过程记录' : 'Game documentation'}</span>
+                    <span>{ui.gameDocumentation}</span>
                     <a href={`https://youtu.be/${activeProject.videoId}`} target="_blank" rel="noreferrer">
                       YouTube <Arrow />
                     </a>
@@ -751,11 +766,11 @@ function App() {
             </div>
             <nav className="project-detail__next shell" aria-label="Project navigation">
               <button onClick={() => openProject(previousProject.id)}>
-                <small>{lang === 'zh' ? '上一个项目' : 'Previous project'}</small>
+                <small>{ui.previousProject}</small>
                 <strong>← {previousProject.title}</strong>
               </button>
               <button onClick={() => openProject(nextProject.id)}>
-                <small>{lang === 'zh' ? '下一个项目' : 'Next project'}</small>
+                <small>{ui.nextProject}</small>
                 <strong>{nextProject.title} →</strong>
               </button>
             </nav>
@@ -768,7 +783,7 @@ function App() {
       ) : isCommercial ? (
         <>
           <section className="commercial-page__hero shell">
-            <button className="back-link" onClick={() => openHome()}>← {lang === 'zh' ? '返回主页' : 'Back to home'}</button>
+            <button className="back-link" onClick={() => openHome()}>← {ui.backHome}</button>
             <div className="section-label">{t.commercialLabel}</div>
             <div className="commercial-page__heading">
               <ScrollReveal as="h1" lang={lang} baseRotation={1.4} blurStrength={5}>
@@ -778,7 +793,7 @@ function App() {
             </div>
           </section>
 
-          <nav className="commercial-index shell" aria-label={lang === 'zh' ? '商业项目目录' : 'Commercial project index'}>
+          <nav className="commercial-index shell" aria-label={ui.commercialIndex}>
             {[
               ['hunger', 'Of Hunger'],
               ['dunhuang', 'Dunhuang'],
@@ -958,13 +973,13 @@ function App() {
             className="showcase-arrow showcase-arrow--left"
             onClick={() => { pauseAutoplay(); goToShowcaseSlide(showcaseIndex - 1, true) }}
             disabled={showcaseIndex === 0}
-            aria-label="Previous slide"
+            aria-label={ui.previousSlide}
           >←</button>
           <button
             className="showcase-arrow showcase-arrow--right"
             onClick={() => { pauseAutoplay(); goToShowcaseSlide(showcaseIndex + 1, true) }}
             disabled={showcaseIndex === showcaseProjects.length}
-            aria-label="Next slide"
+            aria-label={ui.nextSlide}
           >→</button>
 
           <div className="project-scroll__ui shell">
@@ -988,7 +1003,7 @@ function App() {
               ))}
             </div>
             <span className="project-scroll__hint">
-              {lang === 'zh' ? '左右滑动 / 拖拽浏览 →' : 'SWIPE / DRAG TO EXPLORE →'}
+              {ui.explore}
             </span>
           </div>
         </div>
@@ -1017,7 +1032,7 @@ function App() {
           <a
             className="commercial-intro showcase-panel"
             href="#/commercial/hunger"
-            aria-label={`${lang === 'zh' ? '进入项目' : 'View project'}: ${t.commercial.hunger.title}`}
+            aria-label={`${ui.viewProject}: ${t.commercial.hunger.title}`}
             draggable="false"
           >
             <img
@@ -1036,7 +1051,7 @@ function App() {
               <div className="commercial-intro__foot">
                 <p>{t.commercialIntro}</p>
                 <span className="commercial-intro__link">
-                  {lang === 'zh' ? '进入 Of Hunger 项目' : 'View Of Hunger project'}<Arrow />
+                  {ui.viewHunger}<Arrow />
                 </span>
               </div>
             </div>
@@ -1064,7 +1079,7 @@ function App() {
                       <p>{item.subtitle}</p>
                     </div>
                     <span className="project__link">
-                      {lang === 'zh' ? '进入商业作品' : 'View commercial work'}<Arrow />
+                      {ui.viewCommercial}<Arrow />
                     </span>
                   </div>
                 </div>
@@ -1076,13 +1091,13 @@ function App() {
           className="showcase-arrow showcase-arrow--left"
           onClick={() => goToCommercialSlide(commercialIndex - 1)}
           disabled={commercialIndex === 0}
-          aria-label="Previous commercial slide"
+          aria-label={ui.previousSlide}
         >←</button>
         <button
           className="showcase-arrow showcase-arrow--right"
           onClick={() => goToCommercialSlide(commercialIndex + 1)}
           disabled={commercialIndex === commercialKeys.length}
-          aria-label="Next commercial slide"
+          aria-label={ui.nextSlide}
         >→</button>
         <div className="commercial-showcase__ui shell">
           <span>{commercialIndex === 0 ? '01 / 05' : `0${commercialIndex + 1} / 05`}</span>
@@ -1141,7 +1156,7 @@ function App() {
             </div>
             <section className="autobiography">
               <div className="autobiography__label">
-                <span>{lang === 'zh' ? '个人陈述' : 'Personal statement'}</span>
+                <span>{ui.personalStatement}</span>
                 <span>01—07</span>
               </div>
               <ScrollReveal as="h3" lang={lang} baseRotation={1} blurStrength={4}>
@@ -1156,7 +1171,7 @@ function App() {
             <div className="profile-contact" id="contact">
               <div>
                 <span>{t.endSmall}</span>
-                <strong>{lang === 'zh' ? '保持联系' : 'Get in touch'}</strong>
+                <strong>{ui.getInTouch}</strong>
               </div>
               <div className="profile-contact__links">
                 <a href={`mailto:${t.email}`}>{t.email}<Arrow /></a>

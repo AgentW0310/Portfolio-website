@@ -21,7 +21,7 @@ export default function ScrollReveal({
   const containerRef = useRef(null)
   const splitText = useMemo(() => {
     const text = typeof children === 'string' ? children : ''
-    const segments = lang === 'zh' ? Array.from(text) : text.split(/(\s+)/)
+    const segments = lang === 'en' ? text.split(/(\s+)/) : Array.from(text)
     return segments.map((word, index) => {
       if (word.match(/^\s+$/)) return word
       return <span className="reveal-word" key={`${word}-${index}`}>{word}</span>
