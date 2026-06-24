@@ -1,0 +1,25 @@
+.scroll-reveal {
+  margin: 0;
+  transform-origin: 0 50%;
+}
+
+.scroll-reveal-text {
+  display: block;
+  font: inherit;
+  line-height: inherit;
+  letter-spacing: inherit;
+}
+
+.reveal-word {
+  display: inline-block;
+  will-change: opacity, filter;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-reveal,
+  .reveal-word {
+    opacity: 1 !important;
+    filter: none !important;
+    transform: none !important;
+  }
+}
