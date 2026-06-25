@@ -23,6 +23,11 @@ main > :not(.line-waves-container):not(.nav):not(.commercial-index) { position: 
 button, a { color: inherit; }
 button { font: inherit; }
 a { text-decoration: none; }
+img, video {
+  -webkit-user-drag: none;
+  -webkit-touch-callout: none;
+  user-select: none;
+}
 img { display: block; width: 100%; }
 figure { margin: 0; }
 ::selection { color: #030404; background: var(--blue); }
@@ -70,6 +75,7 @@ figure { margin: 0; }
   cursor: pointer;
 }
 .wordmark span { margin-left: 3px; vertical-align: top; font-size: 8px; letter-spacing: 0; }
+.wordmark__menu-mark { display: none; }
 .nav__links { display: flex; align-items: center; gap: 38px; }
 .nav__links button, .lang button {
   padding: 4px 0;
@@ -116,6 +122,9 @@ figure { margin: 0; }
   transition: background .25s ease, color .25s ease;
 }
 .contact-pill:hover { color: #050606; background: #f1f3f0; }
+
+.mobile-nav,
+.mobile-nav__backdrop { display: none; }
 
 .hero {
   position: relative;
@@ -823,6 +832,86 @@ figure { margin: 0; }
   color: #b4bab7;
   text-transform: none;
 }
+.commercial-work-index__card--hunger {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(330px, .45fr);
+  gap: 0;
+  background: #101111;
+}
+.commercial-work-index__card--hunger figure {
+  grid-row: 1;
+  grid-column: 1;
+  aspect-ratio: auto;
+  height: min(620px, 58vh);
+  min-height: 500px;
+  background: #e9e9e7;
+}
+.commercial-work-index__card--hunger figure > img {
+  object-fit: cover;
+  object-position: center 39%;
+  filter: saturate(1) contrast(1.02);
+}
+.commercial-work-index__card--hunger:hover figure > img {
+  transform: scale(1.018);
+  filter: saturate(1) contrast(1.02);
+}
+.commercial-work-index__card--hunger .project-index__shade {
+  z-index: 2;
+  background: linear-gradient(0deg, rgba(0,0,0,.12), transparent 34%);
+}
+.commercial-work-index__card--hunger .project-index__number,
+.commercial-work-index__card--hunger .project-index__view {
+  z-index: 3;
+}
+.commercial-work-index__card--hunger .project-index__meta {
+  grid-row: 1;
+  grid-column: 2;
+  min-width: 0;
+  padding: 42px 38px 38px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-top: 0;
+  border-left: 1px solid var(--line);
+}
+.commercial-work-index__card--hunger .project-index__meta h2 {
+  max-width: 7.8em;
+  font-size: clamp(46px, 4.6vw, 78px);
+}
+.commercial-work-index__card--hunger .project-index__meta p {
+  margin-top: 22px;
+}
+.commercial-work-index__card--hunger .project-index__meta > span {
+  text-align: left;
+}
+.commercial-work-index {
+  padding-top: 104px;
+}
+.commercial-work-index > .section-label {
+  margin-top: 24px;
+}
+.commercial-work-index .project-index__heading {
+  margin-top: 26px;
+}
+.commercial-work-index .project-index__heading h1 {
+  font-size: clamp(54px, 5.4vw, 94px);
+}
+.commercial-work-index .project-index__grid {
+  margin-top: 44px;
+}
+.commercial-work-index__card--dunhuang figure > img { object-position: center 52%; }
+.commercial-work-index__card--cap figure > img {
+  object-fit: contain;
+  padding: 5%;
+  background: #e7e7e4;
+}
+.commercial-work-index__card--ring figure > img {
+  object-fit: contain;
+  padding: 6%;
+  background: #ececeb;
+}
+.commercial-work-index__card--cat figure > img { object-position: center 46%; }
 
 .archive { padding: 20px 0 170px; }
 .archive__head {
@@ -1566,6 +1655,122 @@ figure { margin: 0; }
   .nav { padding-inline: 24px; }
   .nav__links { display: none; }
   .nav { grid-template-columns: 1fr 1fr; }
+  .nav__actions { transition: opacity .3s ease; }
+  .nav--menu-open .nav__actions { opacity: 0; pointer-events: none; }
+  .wordmark {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 13px;
+  }
+  .wordmark__menu-mark {
+    position: relative;
+    width: 17px;
+    height: 12px;
+    display: block;
+  }
+  .wordmark__menu-mark::before,
+  .wordmark__menu-mark::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 17px;
+    height: 1px;
+    background: rgba(255,255,255,.78);
+    transition: top .35s ease, transform .35s ease;
+  }
+  .wordmark__menu-mark::before { top: 3px; }
+  .wordmark__menu-mark::after { top: 9px; }
+  .wordmark.is-menu-open .wordmark__menu-mark::before { top: 6px; transform: rotate(45deg); }
+  .wordmark.is-menu-open .wordmark__menu-mark::after { top: 6px; transform: rotate(-45deg); }
+  main > .mobile-nav__backdrop {
+    position: fixed !important;
+    z-index: 18 !important;
+    inset: 0;
+    display: block;
+    border: 0;
+    background: rgba(0,0,0,.58);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .45s ease;
+  }
+  .mobile-nav__backdrop.is-open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  main > .mobile-nav {
+    position: fixed !important;
+    z-index: 19 !important;
+    inset: 0 auto 0 0;
+    width: min(82vw, 420px);
+    padding: 112px 26px 28px;
+    display: flex;
+    flex-direction: column;
+    background: rgba(7,8,8,.94);
+    border-right: 1px solid rgba(255,255,255,.15);
+    backdrop-filter: blur(24px);
+    transform: translateX(-102%);
+    visibility: hidden;
+    transition: transform .55s cubic-bezier(.22,.75,.16,1), visibility .55s;
+  }
+  .mobile-nav.is-open {
+    transform: translateX(0);
+    visibility: visible;
+  }
+  .mobile-nav__label {
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--line);
+    color: #727a77;
+    font-size: 8px;
+    letter-spacing: .16em;
+  }
+  .mobile-nav nav {
+    margin-top: 42px;
+    display: flex;
+    flex-direction: column;
+  }
+  .mobile-nav nav button {
+    width: 100%;
+    padding: 20px 0 18px;
+    display: grid;
+    grid-template-columns: 38px 1fr auto;
+    align-items: center;
+    border: 0;
+    border-bottom: 1px solid var(--line);
+    background: none;
+    text-align: left;
+    cursor: pointer;
+  }
+  .mobile-nav nav button > span {
+    color: #626966;
+    font-size: 8px;
+    letter-spacing: .12em;
+  }
+  .mobile-nav nav button strong {
+    font: 500 clamp(25px, 7vw, 34px)/1 Manrope, "Noto Sans SC", sans-serif;
+    letter-spacing: -.04em;
+  }
+  .mobile-nav nav button i {
+    color: #828986;
+    font-size: 15px;
+    font-style: normal;
+    transition: color .3s ease, transform .3s ease;
+  }
+  .mobile-nav nav button:hover i {
+    color: #fff;
+    transform: translate(2px, -2px);
+  }
+  .mobile-nav__footer {
+    margin-top: auto;
+    padding-top: 18px;
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid var(--line);
+    color: #757c79;
+    font-size: 8px;
+    letter-spacing: .08em;
+  }
   .about__intro, .profile-grid, .work__title-row, .case-study__intro, .commercial__head, .commercial-feature, .commercial-hunger { grid-template-columns: 1fr; gap: 50px; }
   .profile-grid { gap: 70px; }
   .portrait { max-width: 620px; }
@@ -1623,6 +1828,40 @@ figure { margin: 0; }
   .project-index__card figure { aspect-ratio: .88 / 1; }
   .project-index__card--forbidden-fruit figure { aspect-ratio: 1.55 / 1; }
   .project-index__card--forbidden-fruit figure > img { object-position: center 54%; }
+  .commercial-work-index__card--hunger { grid-column: auto; }
+  .commercial-work-index { padding-top: 100px; }
+  .commercial-work-index > .section-label { margin-top: 44px; }
+  .commercial-work-index .project-index__heading { margin-top: 38px; }
+  .commercial-work-index .project-index__grid { margin-top: 60px; }
+  .commercial-work-index__card--hunger {
+    display: block;
+    background: transparent;
+  }
+  .commercial-work-index__card--hunger figure {
+    height: auto;
+    min-height: 0;
+    aspect-ratio: .88 / 1;
+  }
+  .commercial-work-index__card--hunger figure > img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 25%;
+    transform: scale(1.04);
+  }
+  .commercial-work-index__card--hunger:hover figure > img { transform: scale(1.04); }
+  .commercial-work-index__card--hunger .project-index__meta {
+    padding: 18px 0 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    border-top: 1px solid var(--line);
+    border-left: 0;
+  }
+  .commercial-work-index__card--hunger .project-index__meta h2 {
+    max-width: none;
+    font-size: clamp(36px, 12vw, 52px);
+  }
   .project-index__card--flow figure > img { object-position: 50% center; }
   .project-index__card--dantes-game figure > img { object-position: 50% 42%; }
   .project-index__number { left: 18px; top: 18px; }

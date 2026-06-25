@@ -181,7 +181,8 @@ const copy = {
       ['Silver Bullet', 'Product concept', 'A cosmetic object balancing mechanical precision and ritual', '/assets/projects/other/silver-bullet.jpg'],
     ],
     commercialLabel: '03 — Commercial work',
-    commercialTitle: ['DESIGN', 'BECOMES', 'REALITY'],
+    commercialTitle: ['FORM,', 'BORN OF', 'INTENT'],
+    displayName: 'ZHUANGWEI LIU',
     commercialIntro: 'Selected commissioned and brand-led work across accessories, jewelry, gifting and wearable technology.',
     commercial: {
       dunhuang: {
@@ -348,7 +349,8 @@ const copy = {
       ['Silver Bullet', '产品概念', '在精密结构与日常仪式之间展开的彩妆物件', '/assets/projects/other/silver-bullet.jpg'],
     ],
     commercialLabel: '03 — 商业作品',
-    commercialTitle: ['设计', '成为', '现实'],
+    commercialTitle: ['形', '随意', '生'],
+    displayName: '刘 庄威',
     commercialIntro: '涵盖配饰、珠宝、礼赠与穿戴科技的品牌项目与产品实践。',
     commercial: {
       dunhuang: {
@@ -419,6 +421,7 @@ function App() {
   const [activeCommercial, setActiveCommercial] = useState('hunger')
   const [route, setRoute] = useState(() => window.location.hash)
   const [autoAnimating, setAutoAnimating] = useState(false)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const showcaseRef = useRef(null)
   const autoPauseUntil = useRef(0)
   const autoAnimationTimer = useRef(null)
@@ -430,8 +433,9 @@ function App() {
   const projectRoute = route.match(/^#\/project\/([^/]+)$/)
   const commercialRoute = route.match(/^#\/commercial(?:\/([^/]+))?$/)
   const isProjectIndex = route === '#/projects'
-  const isCommercial = Boolean(commercialRoute)
+  const isCommercialIndex = route === '#/commercial'
   const commercialTarget = commercialRoute?.[1]
+  const isCommercial = Boolean(commercialTarget)
   const activeProjectId = projectRoute?.[1]
   const activeProjectIndex = t.projects.findIndex((project) => project.id === activeProjectId)
   const activeProject = activeProjectIndex >= 0 ? t.projects[activeProjectIndex] : null
@@ -442,6 +446,20 @@ function App() {
     if ('scrollRestoration' in history) history.scrollRestoration = 'manual'
     if (!window.location.hash) window.scrollTo(0, 0)
   }, [])
+
+  useEffect(() => {
+    if (!mobileMenuOpen) return
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    const closeOnEscape = (event) => {
+      if (event.key === 'Escape') setMobileMenuOpen(false)
+    }
+    window.addEventListener('keydown', closeOnEscape)
+    return () => {
+      document.body.style.overflow = previousOverflow
+      window.removeEventListener('keydown', closeOnEscape)
+    }
+  }, [mobileMenuOpen])
 
   useEffect(() => {
     document.documentElement.lang = ui.htmlLang
@@ -455,9 +473,10 @@ function App() {
   useEffect(() => {
     if (activeProject) document.title = `${activeProject.title} — Zhuangwei Liu`
     else if (isProjectIndex) document.title = `${t.projectsLabel.replace(/^\d+\s*—\s*/, '')} — Zhuangwei Liu`
+    else if (isCommercialIndex) document.title = `${ui.commercialTitle} — Zhuangwei Liu`
     else if (isCommercial) document.title = `${ui.commercialTitle} — Zhuangwei Liu`
     else document.title = `Zhuangwei Liu — ${ui.professionalTitle}`
-  }, [activeProject, isProjectIndex, isCommercial, t.projectsLabel, ui])
+  }, [activeProject, isProjectIndex, isCommercialIndex, isCommercial, t.projectsLabel, ui])
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 30)
@@ -468,6 +487,7 @@ function App() {
 
   const jump = (id) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
   const commercialKeys = ['dunhuang', 'cap', 'ring', 'cat']
+  const commercialIndexKeys = ['hunger', 'dunhuang', 'cap', 'ring', 'cat']
 
   useEffect(() => {
     const onHashChange = () => {
@@ -556,8 +576,13 @@ function App() {
     window.location.hash = nextHash.slice(1)
   }
 
+  const runMobileNavigation = (action) => {
+    setMobileMenuOpen(false)
+    action()
+  }
+
   useEffect(() => {
-    if (activeProject || isProjectIndex || isCommercial) return
+    if (activeProject || isProjectIndex || isCommercialIndex || isCommercial) return
     const onUserIntent = () => pauseAutoplay()
     window.addEventListener('wheel', onUserIntent, { passive: true })
     window.addEventListener('touchstart', onUserIntent, { passive: true })
@@ -581,7 +606,7 @@ function App() {
       window.removeEventListener('touchstart', onUserIntent)
       window.removeEventListener('pointerdown', onUserIntent)
     }
-  }, [activeProject, isProjectIndex, isCommercial, showcaseIndex, showcaseProjects.length])
+  }, [activeProject, isProjectIndex, isCommercialIndex, isCommercial, showcaseIndex, showcaseProjects.length])
 
   const handleShowcaseWheel = (event) => {
     if (Math.abs(event.deltaX) <= Math.abs(event.deltaY) || Math.abs(event.deltaX) < 1) return
@@ -674,16 +699,36 @@ function App() {
   const nextProject = activeProject ? t.projects[(activeProjectIndex + 1) % t.projects.length] : null
 
   return (
-    <main className={`${lang !== 'en' ? 'cjk' : ''} lang-${lang} ${activeProject ? 'project-page' : isProjectIndex ? 'project-index-page' : isCommercial ? 'commercial-page' : 'home-page'}`}>
+    <main
+      className={`${lang !== 'en' ? 'cjk' : ''} lang-${lang} ${activeProject ? 'project-page' : isProjectIndex ? 'project-index-page' : isCommercialIndex ? 'commercial-index-page' : isCommercial ? 'commercial-page' : 'home-page'}`}
+      onContextMenu={(event) => {
+        if (event.target.closest('img, video')) event.preventDefault()
+      }}
+      onDragStart={(event) => {
+        if (event.target.closest('img, video')) event.preventDefault()
+      }}
+    >
       <LineWaves />
-      <header className={`nav ${scrolled ? 'nav--solid' : ''}`}>
-        <button className="wordmark" onClick={() => openHome()} aria-label={ui.backHome}>
-          ZL<span>®</span>
+      <header className={`nav ${scrolled ? 'nav--solid' : ''} ${mobileMenuOpen ? 'nav--menu-open' : ''}`}>
+        <button
+          className={`wordmark ${mobileMenuOpen ? 'is-menu-open' : ''}`}
+          onClick={() => {
+            if (window.matchMedia('(max-width: 1050px)').matches) {
+              setMobileMenuOpen((current) => !current)
+            } else {
+              openHome()
+            }
+          }}
+          aria-label={ui.mainNavigation}
+          aria-expanded={mobileMenuOpen}
+          aria-controls="mobile-navigation"
+        >
+          ZL<span>®</span><i className="wordmark__menu-mark" aria-hidden="true" />
         </button>
         <nav className="nav__links" aria-label={ui.mainNavigation}>
           <button onClick={() => openHome()}>{t.nav[0]}</button>
           <button onClick={openProjectIndex}>{t.nav[1]}</button>
-          <button onClick={() => openHome('commercial-showcase')}>{t.nav[2]}</button>
+          <button onClick={() => openCommercial()}>{t.nav[2]}</button>
           <button onClick={() => openHome('about')}>{t.nav[3]}</button>
         </nav>
         <div className="nav__actions">
@@ -701,11 +746,47 @@ function App() {
               </button>
             ))}
           </div>
-          <button className="contact-pill" onClick={() => activeProject || isProjectIndex || isCommercial ? openHome('contact') : jump('contact')}>
+          <button className="contact-pill" onClick={() => activeProject || isProjectIndex || isCommercialIndex || isCommercial ? openHome('contact') : jump('contact')}>
             {t.contact}<Arrow />
           </button>
         </div>
       </header>
+
+      <button
+        className={`mobile-nav__backdrop ${mobileMenuOpen ? 'is-open' : ''}`}
+        onClick={() => setMobileMenuOpen(false)}
+        aria-label={ui.backHome}
+        tabIndex={mobileMenuOpen ? 0 : -1}
+      />
+      <aside
+        className={`mobile-nav ${mobileMenuOpen ? 'is-open' : ''}`}
+        id="mobile-navigation"
+        aria-hidden={!mobileMenuOpen}
+      >
+        <div className="mobile-nav__label">ZHUANGWEI LIU / NAVIGATION</div>
+        <nav aria-label={ui.mainNavigation}>
+          {[
+            [t.nav[0], () => openHome()],
+            [t.nav[1], openProjectIndex],
+            [t.nav[2], () => openCommercial()],
+            [t.nav[3], () => openHome('about')],
+          ].map(([label, action], index) => (
+            <button
+              key={label}
+              onClick={() => runMobileNavigation(action)}
+              tabIndex={mobileMenuOpen ? 0 : -1}
+            >
+              <span>0{index + 1}</span>
+              <strong>{label}</strong>
+              <i aria-hidden="true">↗</i>
+            </button>
+          ))}
+        </nav>
+        <div className="mobile-nav__footer">
+          <span>{t.email}</span>
+          <span>© 2026</span>
+        </div>
+      </aside>
 
       {activeProject ? (
         <>
@@ -838,14 +919,61 @@ function App() {
             <a href={`mailto:${t.email}`}>{t.email}<Arrow /></a>
           </footer>
         </>
+      ) : isCommercialIndex ? (
+        <>
+          <section className="project-index commercial-work-index shell">
+            <button className="back-link" onClick={() => openHome()}>← {ui.backHome}</button>
+            <div className="section-label">{t.commercialLabel}</div>
+            <div className="project-index__heading">
+              <ScrollReveal as="h1" lang={lang} baseRotation={1.4} blurStrength={5}>
+                {t.commercialTitle.join(lang === 'en' ? ' ' : '')}
+              </ScrollReveal>
+              <p>{t.commercialIntro}</p>
+            </div>
+
+            <div className="project-index__grid commercial-work-index__grid">
+              {commercialIndexKeys.map((key, index) => {
+                const item = t.commercial[key]
+                const cover = key === 'hunger'
+                  ? '/assets/commercial/of-hunger-gray/EN_2d3d56fa-4721-4116-8fa1-5c0ca3db35af.webp'
+                  : commercialShowcaseCovers[key]
+                return (
+                  <a
+                    className={`project-index__card commercial-work-index__card commercial-work-index__card--${key}`}
+                    href={`#/commercial/${key}`}
+                    key={key}
+                  >
+                    <figure>
+                      <img src={cover} alt={item.title} decoding="async" />
+                      <span className="project-index__shade" />
+                      <span className="project-index__number">0{index + 1} / 05</span>
+                      <span className="project-index__view">{ui.viewCommercial}<Arrow /></span>
+                    </figure>
+                    <div className="project-index__meta">
+                      <div>
+                        <h2>{item.title}</h2>
+                        <p>{item.subtitle}</p>
+                      </div>
+                      <span>{item.type}<br />{item.year}</span>
+                    </div>
+                  </a>
+                )
+              })}
+            </div>
+          </section>
+          <footer className="project-index__footer shell">
+            <span>{t.copyright}</span>
+            <a href={`mailto:${t.email}`}>{t.email}<Arrow /></a>
+          </footer>
+        </>
       ) : isCommercial ? (
         <>
           <section className="commercial-page__hero shell">
-            <button className="back-link" onClick={() => openHome()}>← {ui.backHome}</button>
+            <button className="back-link" onClick={() => openCommercial()}>← {ui.backCommercial}</button>
             <div className="section-label">{t.commercialLabel}</div>
             <div className="commercial-page__heading">
               <ScrollReveal as="h1" lang={lang} baseRotation={1.4} blurStrength={5}>
-                {t.commercialTitle.join(' ')}
+                {t.commercialTitle.join(lang === 'en' ? ' ' : '')}
               </ScrollReveal>
               <p>{t.commercialIntro}</p>
             </div>
@@ -1192,7 +1320,7 @@ function App() {
         <div className="profile-grid">
           <figure className="portrait">
             <img src="/assets/profile-zhuangwei.png" alt="Portrait of Zhuangwei Liu" loading="lazy" decoding="async" />
-            <figcaption>ZHUANGWEI LIU / PORTRAIT</figcaption>
+            <figcaption>{t.displayName}</figcaption>
           </figure>
           <div className="profile-narrative">
             <div className="profile-statement">
