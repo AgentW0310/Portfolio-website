@@ -464,26 +464,53 @@ figure { margin: 0; }
   position: absolute;
   z-index: 6;
   top: 50%;
-  width: 44px;
-  height: 70px;
+  width: 76px;
+  height: 110px;
   padding: 0;
   display: grid;
   place-items: center;
   transform: translateY(-50%);
   border: 0;
-  color: rgba(255,255,255,.72);
-  background: rgba(5,6,6,.12);
-  backdrop-filter: blur(8px);
-  font-size: 20px;
+  color: rgba(255,255,255,.78);
+  background: transparent;
   cursor: pointer;
-  transition: color .25s ease, background .25s ease, opacity .25s ease, margin .25s ease;
+  transition: color .45s ease, opacity .35s ease;
 }
-.showcase-arrow:hover { color: #fff; background: rgba(5,6,6,.5); }
-.showcase-arrow--left:hover { margin-left: -3px; }
-.showcase-arrow--right:hover { margin-right: -3px; }
+.showcase-arrow::before {
+  content: "";
+  position: absolute;
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0);
+  filter: blur(18px);
+  transition: background .55s ease, transform .55s ease;
+}
+.showcase-arrow__chevron {
+  position: relative;
+  z-index: 1;
+  width: 21px;
+  height: 21px;
+  border-top: 2px solid currentColor;
+  border-right: 2px solid currentColor;
+  filter: drop-shadow(0 0 0 rgba(255,255,255,0));
+  transition: filter .5s ease, transform .5s cubic-bezier(.2,.7,.2,1);
+}
+.showcase-arrow--left .showcase-arrow__chevron { transform: rotate(-135deg); }
+.showcase-arrow--right .showcase-arrow__chevron { transform: rotate(45deg); }
+.showcase-arrow:hover { color: #fff; }
+.showcase-arrow:hover::before {
+  background: rgba(255,255,255,.2);
+  transform: scale(1.12);
+}
+.showcase-arrow:hover .showcase-arrow__chevron {
+  filter: drop-shadow(0 0 8px rgba(255,255,255,.95)) drop-shadow(0 0 18px rgba(255,255,255,.55));
+}
+.showcase-arrow--left:hover .showcase-arrow__chevron { transform: translateX(-4px) rotate(-135deg); }
+.showcase-arrow--right:hover .showcase-arrow__chevron { transform: translateX(4px) rotate(45deg); }
 .showcase-arrow:disabled { opacity: 0; pointer-events: none; }
-.showcase-arrow--left { left: 0; }
-.showcase-arrow--right { right: 0; }
+.showcase-arrow--left { left: 12px; }
+.showcase-arrow--right { right: 12px; }
 
 .case-list { margin-top: 0; }
 .case-study {
@@ -660,6 +687,142 @@ figure { margin: 0; }
   text-transform: uppercase;
 }
 .project-footer a { display: flex; gap: 30px; color: #b4bab7; text-transform: none; }
+
+.project-index {
+  min-height: 100vh;
+  padding: 150px 0 145px;
+}
+.project-index > .section-label { margin-top: 74px; }
+.project-index__heading {
+  margin-top: 64px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 390px;
+  gap: 9%;
+  align-items: end;
+}
+.project-index__heading h1 {
+  max-width: 1120px;
+  margin: 0;
+  font: 600 clamp(58px, 6.7vw, 118px)/.94 Manrope, "Noto Sans SC", sans-serif;
+  letter-spacing: -.065em;
+}
+.cjk .project-index__heading h1 {
+  font-weight: 700;
+  letter-spacing: -.045em;
+}
+.project-index__heading > p {
+  margin: 0 0 7px;
+  color: #929996;
+  font-size: 13px;
+  line-height: 1.8;
+}
+.project-index__grid {
+  margin-top: 120px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 105px 28px;
+}
+.project-index__card {
+  min-width: 0;
+  display: block;
+}
+.project-index__card figure {
+  position: relative;
+  aspect-ratio: 1.38 / 1;
+  overflow: hidden;
+  background: #101111;
+}
+.project-index__card figure > img {
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(.88) brightness(.88);
+  transition: transform .9s cubic-bezier(.2,.7,.2,1), filter .5s ease;
+}
+.project-index__card:hover figure > img {
+  transform: scale(1.025);
+  filter: saturate(.98) brightness(.96);
+}
+.project-index__shade {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(0,0,0,.35), transparent 35%),
+    linear-gradient(0deg, rgba(0,0,0,.42), transparent 30%);
+  transition: opacity .4s ease;
+}
+.project-index__card:hover .project-index__shade { opacity: .72; }
+.project-index__number,
+.project-index__view {
+  position: absolute;
+  z-index: 2;
+  top: 24px;
+  color: rgba(255,255,255,.72);
+  font-size: 9px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+.project-index__number { left: 26px; }
+.project-index__view {
+  right: 26px;
+  display: flex;
+  gap: 28px;
+  opacity: 0;
+  transform: translateY(5px);
+  transition: opacity .35s ease, transform .35s ease;
+}
+.project-index__card:hover .project-index__view {
+  opacity: 1;
+  transform: translateY(0);
+}
+.project-index__meta {
+  padding-top: 22px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 30px;
+  align-items: start;
+  border-top: 1px solid var(--line);
+}
+.project-index__meta h2 {
+  margin: 0;
+  font: 600 clamp(35px, 3.2vw, 58px)/.95 Manrope, "Noto Sans SC", sans-serif;
+  letter-spacing: -.055em;
+}
+.project-index__meta p {
+  margin: 12px 0 0;
+  color: #a0a6a3;
+  font-size: 11px;
+  letter-spacing: .12em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+.project-index__meta > span {
+  color: #777e7b;
+  font-size: 9px;
+  line-height: 1.8;
+  letter-spacing: .08em;
+  text-align: right;
+  text-transform: uppercase;
+}
+.project-index__card--forbidden-fruit figure > img { object-position: center 54%; }
+.project-index__card--flow figure > img { object-position: center 45%; }
+.project-index__card--dantes-game figure > img { object-position: center 39%; }
+.project-index__card--peeping figure > img { object-position: center 42%; }
+.project-index__footer {
+  padding: 30px 0 42px;
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid var(--line);
+  color: #747b78;
+  font-size: 9px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+.project-index__footer a {
+  display: flex;
+  gap: 30px;
+  color: #b4bab7;
+  text-transform: none;
+}
 
 .archive { padding: 20px 0 170px; }
 .archive__head {
@@ -1416,7 +1579,9 @@ figure { margin: 0; }
   .profile-statement { grid-template-columns: 1fr; gap: 28px; }
   .autobiography__body { grid-template-columns: 1fr; }
   .commercial-page__heading,
-  .commercial-case__intro { grid-template-columns: 1fr; gap: 28px; }
+  .commercial-case__intro,
+  .project-index__heading { grid-template-columns: 1fr; gap: 28px; }
+  .project-index__heading > p { max-width: 620px; }
   .commercial-gallery--dunhuang,
   .commercial-gallery--hunger { grid-template-columns: 1fr 1fr; }
   .commercial-gallery--cap { grid-template-columns: 1fr 1fr; }
@@ -1445,6 +1610,38 @@ figure { margin: 0; }
   .lang button { min-width: 23px; padding: 5px; font-size: 9px; letter-spacing: 0; }
   .contact-pill { height: 38px; padding-inline: 14px; gap: 12px; }
   .lang-ja .contact-pill { padding-inline: 11px; gap: 7px; font-size: 9px; }
+  .project-index { padding: 105px 0 95px; }
+  .project-index > .section-label { margin-top: 48px; }
+  .project-index__heading { margin-top: 45px; }
+  .project-index__heading h1 { font-size: clamp(43px, 13vw, 60px); line-height: .98; }
+  .project-index__heading > p { font-size: 11px; line-height: 1.7; }
+  .project-index__grid {
+    margin-top: 78px;
+    grid-template-columns: 1fr;
+    gap: 72px;
+  }
+  .project-index__card figure { aspect-ratio: .88 / 1; }
+  .project-index__card--forbidden-fruit figure { aspect-ratio: 1.55 / 1; }
+  .project-index__card--forbidden-fruit figure > img { object-position: center 54%; }
+  .project-index__card--flow figure > img { object-position: 50% center; }
+  .project-index__card--dantes-game figure > img { object-position: 50% 42%; }
+  .project-index__number { left: 18px; top: 18px; }
+  .project-index__view {
+    top: auto;
+    right: 18px;
+    bottom: 18px;
+    opacity: 1;
+    transform: none;
+  }
+  .project-index__meta {
+    padding-top: 18px;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .project-index__meta h2 { font-size: clamp(36px, 12vw, 52px); }
+  .project-index__meta p { font-size: 9px; }
+  .project-index__meta > span { text-align: left; }
+  .project-index__footer { align-items: flex-start; flex-direction: column; gap: 18px; }
   .showcase-scroll,
   .showcase-scroll__sticky,
   .hero,
@@ -1489,7 +1686,11 @@ figure { margin: 0; }
   .project-scroll__ui { bottom: 8px; width: calc(100% - 32px); }
   .project-scroll__hint { display: none; }
   .project-scroll__dots button { width: 28px; }
-  .showcase-arrow { width: 38px; height: 64px; }
+  .showcase-arrow { width: 52px; height: 82px; }
+  .showcase-arrow::before { width: 44px; height: 44px; }
+  .showcase-arrow__chevron { width: 16px; height: 16px; border-width: 1.5px; }
+  .showcase-arrow--left { left: 0; }
+  .showcase-arrow--right { right: 0; }
   .case-list { margin-top: 120px; }
   .case-study { padding: 75px 0 110px; }
   .case-study__intro { margin-top: 50px; }

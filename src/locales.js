@@ -135,7 +135,7 @@ function mergeLocale(base, translation) {
 
 export function buildExtraLocales(base) {
   const traditional = mergeLocale(base, {
-    nav: ['關於我', '精選作品', '商業作品'],
+    nav: ['首頁', '精選作品', '商業作品', '關於我'],
     contact: '聯絡我',
     eyebrow: '珠寶 · 時尚物件 · 當代藝術',
     heroTitle: ['物件', '成為', '身份'],
@@ -246,7 +246,7 @@ export function buildExtraLocales(base) {
   })
 
   const japanese = mergeLocale(base, {
-    nav: ['プロフィール', '選定作品', 'コマーシャル'],
+    nav: ['ホーム', '選定作品', 'コマーシャル', 'プロフィール'],
     contact: '連絡する',
     eyebrow: 'ジュエリー · ファッションアーティファクト · 現代美術',
     heroTitle: ['物体が', 'アイデンティティに', 'なる'],

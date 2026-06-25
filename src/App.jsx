@@ -67,7 +67,7 @@ function galleryLayout(projectId, index) {
 
 const copy = {
   en: {
-    nav: ['About', 'Selected Work', 'Commercial Works'],
+    nav: ['Home', 'Selected Work', 'Commercial Works', 'About'],
     contact: 'Contact',
     eyebrow: 'Jewelry · Fashion Artefacts · Contemporary Art',
     heroTitle: ['OBJECTS', 'BECOME', 'IDENTITY'],
@@ -110,6 +110,7 @@ const copy = {
         type: 'Wearable Object · Jewelry',
         year: '2021',
         cover: '/assets/projects/forbidden-fruit/cover.png',
+        indexCover: '/assets/projects/forbidden-fruit/gallery/02.png',
         statement:
           'Forbidden Fruit examines the tension created when systems of protection become systems of prohibition. Taking the apple as a symbol of knowledge, temptation and transgression, the project turns curiosity into a polished object that can be approached, handled and worn.',
         details: [
@@ -234,7 +235,7 @@ const copy = {
     copyright: '© 2026 ZHUANGWEI LIU. ALL RIGHTS RESERVED.',
   },
   zh: {
-    nav: ['关于我', '精选项目', '商业作品'],
+    nav: ['首页', '精选项目', '商业作品', '关于我'],
     contact: '联系我',
     eyebrow: '珠宝 · 时尚物件 · 当代艺术',
     heroTitle: ['物件', '成为', '身份'],
@@ -428,6 +429,7 @@ function App() {
   const ui = localeUi[lang]
   const projectRoute = route.match(/^#\/project\/([^/]+)$/)
   const commercialRoute = route.match(/^#\/commercial(?:\/([^/]+))?$/)
+  const isProjectIndex = route === '#/projects'
   const isCommercial = Boolean(commercialRoute)
   const commercialTarget = commercialRoute?.[1]
   const activeProjectId = projectRoute?.[1]
@@ -452,9 +454,10 @@ function App() {
 
   useEffect(() => {
     if (activeProject) document.title = `${activeProject.title} — Zhuangwei Liu`
+    else if (isProjectIndex) document.title = `${t.projectsLabel.replace(/^\d+\s*—\s*/, '')} — Zhuangwei Liu`
     else if (isCommercial) document.title = `${ui.commercialTitle} — Zhuangwei Liu`
     else document.title = `Zhuangwei Liu — ${ui.professionalTitle}`
-  }, [activeProject, isCommercial, ui])
+  }, [activeProject, isProjectIndex, isCommercial, t.projectsLabel, ui])
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 30)
@@ -514,6 +517,15 @@ function App() {
   }
 
   const openHome = (target) => {
+    if (!target) {
+      clearTimeout(autoAnimationTimer.current)
+      setAutoAnimating(false)
+      setShowcaseIndex(0)
+      setShowcasePosition(0)
+      setCommercialIndex(0)
+      setCommercialPosition(0)
+      autoPauseUntil.current = 0
+    }
     if (window.location.hash) history.pushState(null, '', window.location.pathname)
     setRoute('')
     requestAnimationFrame(() => {
@@ -531,6 +543,10 @@ function App() {
     window.location.hash = `/project/${projectId}`
   }
 
+  const openProjectIndex = () => {
+    window.location.hash = '/projects'
+  }
+
   const openCommercial = (projectId) => {
     const nextHash = projectId ? `#/commercial/${projectId}` : '#/commercial'
     if (window.location.hash === nextHash && projectId) {
@@ -541,7 +557,7 @@ function App() {
   }
 
   useEffect(() => {
-    if (activeProject || isCommercial) return
+    if (activeProject || isProjectIndex || isCommercial) return
     const onUserIntent = () => pauseAutoplay()
     window.addEventListener('wheel', onUserIntent, { passive: true })
     window.addEventListener('touchstart', onUserIntent, { passive: true })
@@ -565,7 +581,7 @@ function App() {
       window.removeEventListener('touchstart', onUserIntent)
       window.removeEventListener('pointerdown', onUserIntent)
     }
-  }, [activeProject, isCommercial, showcaseIndex, showcaseProjects.length])
+  }, [activeProject, isProjectIndex, isCommercial, showcaseIndex, showcaseProjects.length])
 
   const handleShowcaseWheel = (event) => {
     if (Math.abs(event.deltaX) <= Math.abs(event.deltaY) || Math.abs(event.deltaX) < 1) return
@@ -658,16 +674,17 @@ function App() {
   const nextProject = activeProject ? t.projects[(activeProjectIndex + 1) % t.projects.length] : null
 
   return (
-    <main className={`${lang !== 'en' ? 'cjk' : ''} lang-${lang} ${activeProject ? 'project-page' : isCommercial ? 'commercial-page' : 'home-page'}`}>
+    <main className={`${lang !== 'en' ? 'cjk' : ''} lang-${lang} ${activeProject ? 'project-page' : isProjectIndex ? 'project-index-page' : isCommercial ? 'commercial-page' : 'home-page'}`}>
       <LineWaves />
       <header className={`nav ${scrolled ? 'nav--solid' : ''}`}>
         <button className="wordmark" onClick={() => openHome()} aria-label={ui.backHome}>
           ZL<span>®</span>
         </button>
         <nav className="nav__links" aria-label={ui.mainNavigation}>
-          <button onClick={() => openHome('about')}>{t.nav[0]}</button>
-          <button onClick={() => openHome(1)}>{t.nav[1]}</button>
+          <button onClick={() => openHome()}>{t.nav[0]}</button>
+          <button onClick={openProjectIndex}>{t.nav[1]}</button>
           <button onClick={() => openHome('commercial-showcase')}>{t.nav[2]}</button>
+          <button onClick={() => openHome('about')}>{t.nav[3]}</button>
         </nav>
         <div className="nav__actions">
           <div className="lang" aria-label={ui.language}>
@@ -684,7 +701,7 @@ function App() {
               </button>
             ))}
           </div>
-          <button className="contact-pill" onClick={() => activeProject || isCommercial ? openHome('contact') : jump('contact')}>
+          <button className="contact-pill" onClick={() => activeProject || isProjectIndex || isCommercial ? openHome('contact') : jump('contact')}>
             {t.contact}<Arrow />
           </button>
         </div>
@@ -694,7 +711,7 @@ function App() {
         <>
           <section className="project-detail">
             <div className="case-study shell">
-              <button className="back-link" onClick={() => openHome(activeProjectIndex + 1)}>← {ui.backProjects}</button>
+              <button className="back-link" onClick={openProjectIndex}>← {ui.backProjects}</button>
               <div className="case-study__meta">
                 <span>{activeProject.no} / 04</span>
                 <span>{activeProject.type}</span>
@@ -776,6 +793,47 @@ function App() {
             </nav>
           </section>
           <footer className="project-footer shell">
+            <span>{t.copyright}</span>
+            <a href={`mailto:${t.email}`}>{t.email}<Arrow /></a>
+          </footer>
+        </>
+      ) : isProjectIndex ? (
+        <>
+          <section className="project-index shell">
+            <button className="back-link" onClick={() => openHome()}>← {ui.backHome}</button>
+            <div className="section-label">{t.projectsLabel}</div>
+            <div className="project-index__heading">
+              <ScrollReveal as="h1" lang={lang} baseRotation={1.4} blurStrength={5}>
+                {t.projectsTitle}
+              </ScrollReveal>
+              <p>{t.projectIntro}</p>
+            </div>
+
+            <div className="project-index__grid">
+              {t.projects.map((project) => (
+                <a
+                  className={`project-index__card project-index__card--${project.id}`}
+                  href={`#/project/${project.id}`}
+                  key={project.id}
+                >
+                  <figure>
+                    <img src={project.indexCover || project.cover} alt={`${project.title} final work`} decoding="async" />
+                    <span className="project-index__shade" />
+                    <span className="project-index__number">{project.no} / 04</span>
+                    <span className="project-index__view">{t.view}<Arrow /></span>
+                  </figure>
+                  <div className="project-index__meta">
+                    <div>
+                      <h2>{project.title}</h2>
+                      <p>{project.subtitle}</p>
+                    </div>
+                    <span>{project.type}<br />{project.year}</span>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </section>
+          <footer className="project-index__footer shell">
             <span>{t.copyright}</span>
             <a href={`mailto:${t.email}`}>{t.email}<Arrow /></a>
           </footer>
@@ -974,13 +1032,13 @@ function App() {
             onClick={() => { pauseAutoplay(); goToShowcaseSlide(showcaseIndex - 1, true) }}
             disabled={showcaseIndex === 0}
             aria-label={ui.previousSlide}
-          >←</button>
+          ><span className="showcase-arrow__chevron" /></button>
           <button
             className="showcase-arrow showcase-arrow--right"
             onClick={() => { pauseAutoplay(); goToShowcaseSlide(showcaseIndex + 1, true) }}
             disabled={showcaseIndex === showcaseProjects.length}
             aria-label={ui.nextSlide}
-          >→</button>
+          ><span className="showcase-arrow__chevron" /></button>
 
           <div className="project-scroll__ui shell">
             <div className="project-scroll__count">
@@ -1092,13 +1150,13 @@ function App() {
           onClick={() => goToCommercialSlide(commercialIndex - 1)}
           disabled={commercialIndex === 0}
           aria-label={ui.previousSlide}
-        >←</button>
+        ><span className="showcase-arrow__chevron" /></button>
         <button
           className="showcase-arrow showcase-arrow--right"
           onClick={() => goToCommercialSlide(commercialIndex + 1)}
           disabled={commercialIndex === commercialKeys.length}
           aria-label={ui.nextSlide}
-        >→</button>
+        ><span className="showcase-arrow__chevron" /></button>
         <div className="commercial-showcase__ui shell">
           <span>{commercialIndex === 0 ? '01 / 05' : `0${commercialIndex + 1} / 05`}</span>
           <div className="project-scroll__dots">
