@@ -113,7 +113,7 @@ const copy = {
         statement:
           'Forbidden Fruit examines the tension created when systems of protection become systems of prohibition. Taking the apple as a symbol of knowledge, temptation and transgression, the project turns curiosity into a polished object that can be approached, handled and worn.',
         details: [
-          'The project began with age-rating systems and the way a single standard can erase context. When violence, sexuality or other adult elements are removed in the name of protection, prohibition can make the unseen more magnetic. I became interested in the psychological state of moving repeatedly toward something one has been told not to touch.',
+          'The project began with the absence of a cultural-content rating system in China. Films, games and other cultural products containing adult elements may face a one-size-fits-all response: they are not approved for import, or may be blocked altogether, rather than being made available to different audiences through classification. This led me to consider how protection can become prohibition—and how prohibition can make the unseen more magnetic. I became interested in the psychological state of moving repeatedly toward something one has been told not to touch.',
           'The apple connects knowledge, temptation, corruption and sin. Through collage, painting and physical experiments—including the suspended tension between balloons and sharp points—I translated that contradiction into jewelry. Smooth surfaces invite contact while compressed structures hold the body at the threshold between attraction and restraint.',
         ],
         focus: 'Prohibition · Curiosity · Tension',
@@ -280,7 +280,7 @@ const copy = {
         statement:
           '《Forbidden Fruit》讨论保护如何逐渐变成禁令，以及禁令又如何反过来放大欲望。苹果在这里象征知识、诱惑与越界，这组矛盾最终被凝结为一件可以靠近、触碰和佩戴的物件。',
         details: [
-          '项目从内容分级制度出发，关注“一种标准适用于所有人”如何抹去年龄、语境与个体差异。当暴力、性暗示或其他成人元素以保护之名被彻底移除，禁令本身反而会放大对未知事物的好奇。我试图捕捉人在边界附近反复试探时，吸引、迟疑与紧张同时发生的心理状态。',
+          '项目源于我对中国尚未建立文化产品分级制度的思考。电影、游戏等作品一旦包含部分成人元素，往往面对的不是按受众年龄进行分类，而是“一刀切”式的不予引进，甚至封锁相关内容。这样的处理方式促使我重新审视保护与禁止之间的边界：当内容以保护之名从视野中消失，禁令本身反而可能放大人们对未知事物的好奇。我试图捕捉人在边界附近反复试探时，吸引、迟疑与紧张同时发生的心理状态。',
           '苹果同时指向知识、诱惑、堕落与罪。通过拼贴、绘画，以及气球与尖锐物逐渐靠近的张力实验，我将这种矛盾转译为珠宝：光滑表面邀请触碰，受到挤压的结构却让身体停留在靠近与克制之间。',
         ],
         focus: '禁令 · 欲望 · 越界',
